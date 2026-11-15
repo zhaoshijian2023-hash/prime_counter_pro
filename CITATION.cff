@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "PrimeCounter Pro: Ultra-fast Prime Counting Based on 9.2MB Footprint"
+version: 4.1.0
+date-released: 2026-11-13
+url: "https://github.com/zhaoshijian2023-hash/PrimeCounter-Pro"
+repository-code: "https://github.com/zhaoshijian2023-hash/PrimeCounter-Pro"
+license: MIT
+authors:
+  - family-names: "Zhao"
+    given-names: "Shijian"
+    email: "zhaoshijian2023@gmail.com"
+    orcid: "https://orcid.org/0009-0000-6411-219X"
+keywords:
+  - prime numbers
+  - number theory
+  - computational mathematics
+  - high-performance computing
+  - Python
+  - Numba
+abstract: >
+  PrimeCounter Pro is a high-performance prime counting function π(N) 
+  implementation that achieves sub-second queries up to 10^16 using 
+  only 9.2 MB of precomputed data. It combines segmented sieving, 
+  bidirectional optimization, and JIT compilation to deliver 
+  performance comparable to specialized algorithms like Meissel-Lehmer, 
+  while maintaining extreme simplicity and minimal memory footprint.
+preferred-citation:
+  type: software
+  title: "PrimeCounter Pro: Ultra-fast Prime Counting Based on 9.2MB Footprint"
+  authors:
+    - family-names: "Zhao"
+      given-names: "Shijian"
+  year: 2026
+  version: 4.1.0
+  url: "https://github.com/zhaoshijian2023-hash/PrimeCounter-Pro"
