@@ -1,20 +1,14 @@
-# 🚀 PrimeCounter Pro — 极速素数计数器
+## 🚀 PrimeCounter Pro
 
-<div align="center">
+基于独创的非对称分段动态筛选架构，仅凭 9.2 MB 极轻量级累积表，在普通 PC 上实现 10¹⁶ 范围内任意素数计数 π(N) 的亚毫秒级精确查询。
 
-# 🔢 PrimeCounter Pro
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
+[![Numba](https://img.shields.io/badge/Numba-JIT-green.svg)](https://numba.pydata.org/)
+[![OEIS Verified](https://img.shields.io/badge/OEIS-A006880-orange.svg)](https://oeis.org/A006880)
+[![Version](https://img.shields.io/github/v/release/zhaoshijian2023-hash/prime_counter_pro)](https://github.com/zhaoshijian2023-hash/prime_counter_pro/releases)
 
-**基于独创的非对称分段动态筛选架构，仅凭 9.2 MB 极轻量级累积表，在普通 PC 上实现 10¹⁶ 范围内任意素数计数 π(N) 的亚毫秒级精确查询。**
-
-[[License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[[Python Version](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
-[[Numba](https://img.shields.io/badge/JIT-Numba-orange.svg)](https://numba.pydata.org/)
-[[OEIS Verified](https://img.shields.io/badge/OEIS-Verified-brightgreen.svg)](https://oeis.org/A006880)
-[[Version](https://img.shields.io/badge/Version-4.1.3-blue.svg)](https://github.com/zhaoshijian2023-hash/PrimeCounter-Pro/releases)
-
-[简体中文](#-1-primecounter-pro--极速素数计数器-中文版) | [English](#-2-primecounter-pro--ultra-fast-prime-counter-english-version)
-
-</div>
+[简体中文](README.md) | [English](README_EN.md)
 
 ---
 
