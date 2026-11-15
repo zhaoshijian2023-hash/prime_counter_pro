@@ -1,7 +1,3 @@
-<details>
-<summary><b>📄 点击展开：修复后的完整 README.md（可直接复制使用）</b></summary>
-
-```markdown
 # 🚀 PrimeCounter Pro — 极速素数计数器
 
 <div align="center">
