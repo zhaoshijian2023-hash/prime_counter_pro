@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**基于独创的非对称分段动态筛选架构，仅凭 9.2 MB 极轻量级累积表，在普通 PC 上实现 10¹⁶ 范围内任意素数计数 π(N) 的亚毫秒级精确查询。**
+**基于独创的非对称分段动态筛选架构，仅凭 9.2 MB 极轻量级累积表，在普通 PC 上实现 10<sup>16</sup> 范围内任意素数计数 π(N) 的亚毫秒级精确查询。**
 
 <p align="center">
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
@@ -25,10 +25,10 @@
 
 ## 📖 项目简介
 
-计算 \(\pi(N)\)（即小于等于 \(N\) 的素数个数）是数论与计算数学中的经典皇冠问题。
+计算 π(N)（即小于等于 N 的素数个数）是数论与计算数学中的经典皇冠问题。
 
-- **传统筛法**（如埃拉托斯特尼筛、分段筛）在 \(10^{11}\) 以上会遭遇灾难性的内存和 CPU 时间瓶颈。
-- **纯查表法** 若要覆盖到 \(10^{16}\) 范围，则需要消耗约 26 TB 的海量存储空间，在普通个人电脑上完全无法运行。
+- **传统筛法**（如埃拉托斯特尼筛、分段筛）在 10<sup>11</sup> 以上会遭遇灾难性的内存和 CPU 时间瓶颈。
+- **纯查表法** 若要覆盖到 10<sup>16</sup> 范围，则需要消耗约 26 TB 的海量存储空间，在普通个人电脑上完全无法运行。
 
 **PrimeCounter Pro** 提出了一种极其优雅的工程解决方案：**非对称分段动态筛选架构**。它将空间压缩到了极致的 **9.2 MB**，同时利用 Numba JIT 编译器进行机器码级加速，在普通笔记本电脑上实现了令人惊叹的秒级查询。
 
@@ -42,7 +42,7 @@
 `[ 块ID, 起始位置, 结束位置, 局部计数, 块内奇数个数，累积计数 ]`。  
 这导致存储 200 万个块需要消耗至少 **34 MB** 的空间。
 
-**我们的创新**：利用数论区间分布的数学自洽性，**只存储 1 个核心字段（累积计数）**，其余 5 个字段全部通过数学关系在运行时进行 **\(O(1)\) 纳秒级推导**：
+**我们的创新**：利用数论区间分布的数学自洽性，**只存储 1 个核心字段（累积计数）**，其余 5 个字段全部通过数学关系在运行时进行 **O(1) 纳秒级推导**：
 
 ```python
 # 物理存储：仅保存一个紧凑的一维累积计数数组（9.2 MB）
@@ -97,37 +97,37 @@ local_count = cumulative_table[block_id] - cumulative_table[block_id - 1]
                     [方案 A: 正向累加]    [方案 B: 逆向扣减]
 ```
 
-- **动态路径决策**：算法在 \(O(1)\) 时间内评估目标点 \(N\) 距离左侧锚点（正向累加）还是右侧锚点（逆向扣减）更近，自动选择步长最短的路线。
-- **整除点零筛选**：当 \(N\) 恰好能被 25 亿整除时，算法触发"瞬时返回"，直接查表输出，耗时为 0。
-- **边界完美无差**：通过严密的区间闭合性设计，彻底消除了块拼接处常见的 \(\pm 1\) 边界误差。
+- **动态路径决策**：算法在 O(1) 时间内评估目标点 N 距离左侧锚点（正向累加）还是右侧锚点（逆向扣减）更近，自动选择步长最短的路线。
+- **整除点零筛选**：当 N 恰好能被 25 亿整除时，算法触发"瞬时返回"，直接查表输出，耗时为 0。
+- **边界完美无差**：通过严密的区间闭合性设计，彻底消除了块拼接处常见的 ±1 边界误差。
 
 ---
 
-## 🏆 实战精度验证（\(10^{16}\) 范围全覆盖）
+## 🏆 实战精度验证（10<sup>16</sup> 范围全覆盖）
 
 为确保在计算机算术临界边界附近的绝对数学正确性和零误差数值精度，本工具已针对三个程序化生成的测试套件进行严格基准测试和验证（所有未编辑的执行日志均可在 `logs/` 中查看），总计 **86 个测试用例，100% 通过**：
 
-### 1️⃣ 梅森数边界 (\(M_p = 2^p - 1\))
-- **测试用例**：\(2^2-1, 2^3-1, 2^5-1, \dots, 2^{57}-1\)（17个素数指数）
+### 1️⃣ 梅森数边界 (M<sub>p</sub> = 2<sup>p</sup> - 1)
+- **测试用例**：2<sup>2</sup>-1, 2<sup>3</sup>-1, 2<sup>5</sup>-1, …, 2<sup>57</sup>-1（17个素数指数）
 - **验证来源**：OEIS A006880 + Wolfram Alpha
 - **结果**：✅ 100% 匹配（17/17 测试通过）
 - **测试目的**：验证特殊数论结构点（梅森数附近质数分布不均匀，是算法鲁棒性的试金石）
 
-### 2️⃣ 十进制里程碑 (\(10^1 \sim 10^{16}\))
-- **测试用例**：\(10, 100, 1000, \dots, 10^{16}\)（16个数量级）
+### 2️⃣ 十进制里程碑 (10<sup>1</sup> ~ 10<sup>16</sup>)
+- **测试用例**：10, 100, 1000, …, 10<sup>16</sup>（16个数量级）
 - **验证来源**：OEIS A006880（官方素数计数序列）
 - **结果**：✅ 100% 匹配（16/16 测试通过）
 - **测试目的**：经典素数定理（PNT）验证点，最权威的标准测试集
 
-### 3️⃣ 二进制里程碑 (\(2^1 \sim 2^{53}\))
-- **测试用例**：\(2, 4, 8, 16, \dots, 2^{53}\)（53个二进制边界）
+### 3️⃣ 二进制里程碑 (2<sup>1</sup> ~ 2<sup>53</sup>)
+- **测试用例**：2, 4, 8, 16, …, 2<sup>53</sup>（53个二进制边界）
 - **验证来源**：OEIS A006880
 - **结果**：✅ 100% 匹配（53/53 测试通过）
 - **测试目的**：浮点数无误差的最大连续整数边界（IEEE 754 双精度极限）
 
 ### 🧪 如何运行内置测试
 
-代码中包含 **4 个测试套件**（前 3 个对应上述验证 + 第 4 个 \(10^{16}\) 临界点压测），可通过调整注释运行：
+代码中包含 **4 个测试套件**（前 3 个对应上述验证 + 第 4 个 10<sup>16</sup> 临界点压测），可通过调整注释运行：
 
 <details>
 <summary><b>📋 点击展开：测试套件代码片段</b></summary>
@@ -213,13 +213,13 @@ Test Suite: Decimal Milestones (10^1 ~ 10^16)
 
 ### A. 算法横向对比
 
-| 算法/工具 | 空间占用 | \(\pi(10^{12})\) 耗时 | \(\pi(10^{14})\) 耗时 | \(\pi(10^{16})\) 耗时 | 最大支持范围 \(N\) | 硬件门槛 |
+| 算法/工具 | 空间占用 | π(10<sup>12</sup>) 耗时 | π(10<sup>14</sup>) 耗时 | π(10<sup>16</sup>) 耗时 | 最大支持范围 N | 硬件门槛 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **PrimeCounter Pro** | **9.2 MB** | **0.01 s** | **0.05 s** | **0.1 s ~ 0.3 s** | **\(10^{16}\)** | **普通笔记本 (i5 + 8G)** |
-| 经典埃氏筛 | \(\approx 125\text{ GB}\) | 10 s | 30 分钟 | 数小时 (或内存溢出) | \(\approx 10^{11}\) | 昂贵服务器集群 |
-| 经典分段筛 | \(\approx 1\text{ GB}\) | \(\approx 30\text{ s}\) | 无法计算 (太慢) | 无法计算 | \(\approx 10^{12}\) | 中端 PC |
-| Meissel-Lehmer | \(\approx 100\text{ MB}\) | 1 s | 10 s | 5 分钟 | \(\approx 10^{16}\) | 高性能工作站 |
-| Deleglise-Rivat | \(\approx 50\text{ MB}\) | 0.5 s | 5 s | 2 分钟 | \(\approx 10^{16}\) | 高性能工作站 |
+| **PrimeCounter Pro** | **9.2 MB** | **0.01 s** | **0.05 s** | **0.1 s ~ 0.3 s** | **10<sup>16</sup>** | **普通笔记本 (i5 + 8G)** |
+| 经典埃氏筛 | ≈ 125 GB | 10 s | 30 分钟 | 数小时 (或内存溢出) | ≈ 10<sup>11</sup> | 昂贵服务器集群 |
+| 经典分段筛 | ≈ 1 GB | ≈ 30 s | 无法计算 (太慢) | 无法计算 | ≈ 10<sup>12</sup> | 中端 PC |
+| Meissel-Lehmer | ≈ 100 MB | 1 s | 10 s | 5 分钟 | ≈ 10<sup>16</sup> | 高性能工作站 |
+| Deleglise-Rivat | ≈ 50 MB | 0.5 s | 5 s | 2 分钟 | ≈ 10<sup>16</sup> | 高性能工作站 |
 
 ### B. 实测基准（Intel i9-14900KF）
 
@@ -360,10 +360,10 @@ print(f"π({N:e}) = {result:,} (耗时: {elapsed:.4f} 秒)")
 
 ### ⚙️ 复杂度分析
 
-- **空间复杂度**：\(O(1)\) — 物理存储空间恒定为 **9.2 MB**，不随查询规模 \(N\) 的增大而增长。
+- **空间复杂度**：O(1) — 物理存储空间恒定为 **9.2 MB**，不随查询规模 N 的增大而增长。
 - **时间复杂度**：
-  - **最坏情况**：\(O(\sqrt{N} \log \log \sqrt{N})\)（当查询点恰好处于块正中间，即距离两端均为 12.5 亿步长时）。
-  - **最好情况**：\(O(1)\)（当查询点命中 25 亿的整数倍边界时，直接查表返回）。
+  - **最坏情况**：O(√N log log √N)（当查询点恰好处于块正中间，即距离两端均为 12.5 亿步长时）。
+  - **最好情况**：O(1)（当查询点命中 25 亿的整数倍边界时，直接查表返回）。
   - **平均情况**：由于 Numba JIT 编译为高度优化的机器码，实际随机查询耗时稳定在 **0.01s ~ 0.3s** 之间。
 
 ---
@@ -372,7 +372,7 @@ print(f"π({N:e}) = {result:,} (耗时: {elapsed:.4f} 秒)")
 
 ### 数据表生成
 - **输出文件**：`cumulative_table_2000000_optimized.npz` (9.2 MB)
-- **内容**：包含 2,000,001 个累积质数计数值，覆盖范围：0 到 \(10^{16}\)。
+- **内容**：包含 2,000,001 个累积质数计数值，覆盖范围：0 到 10<sup>16</sup>。
 - **计算过程**：
   - **硬件**：Intel Core i9 处理器
   - **策略**：分 10 个批次执行，每批次处理 200,000 个块
@@ -478,7 +478,7 @@ def count_primes_parallel(nxx):
 ## 🗺️ 未来发展路线图
 
 ### Phase 1: 当前版本（已完成 ✅）
-- ✅ 支持范围：\(10^{16}\)
+- ✅ 支持范围：10<sup>16</sup>
 - ✅ 内存占用：9.2 MB
 - ✅ 查询速度：0.01s ~ 0.3s
 
@@ -500,7 +500,7 @@ def count_primes_parallel(nxx):
 
 我们非常欢迎来自全球数论与高性能计算爱好者的共同建设！目前感兴趣的研究方向包括：
 
-1. **跨越 \(10^{16}\) 极限**：探索在保持超低内存占用的前提下，将算法扩展至 \(10^{18}\) 甚至更高。
+1. **跨越 10<sup>16</sup> 极限**：探索在保持超低内存占用的前提下，将算法扩展至 10<sup>18</sup> 甚至更高。
 2. **GPU 并行加速**：利用 PyCUDA 或 CuPy 将双向筛分算法移植至 GPU。
 3. **多语言生态**：提供原生 Rust / C++ 绑定，进一步压榨底层硬件性能。
 
@@ -550,10 +550,10 @@ def count_primes_parallel(nxx):
 
 ## 📖 Introduction
 
-Computing \(\pi(N)\) (the number of primes less than or equal to \(N\)) is a classic crown-jewel problem in number theory and computational mathematics.
+Computing π(N) (the number of primes less than or equal to N) is a classic crown-jewel problem in number theory and computational mathematics.
 
-- **Traditional Sieve Algorithms** (e.g., Sieve of Eratosthenes, Segmented Sieve) encounter catastrophic memory and CPU bottlenecks beyond \(10^{11}\).
-- **Pure Lookup Table Methods** covering up to \(10^{16}\) would require approximately 26 TB of storage, making them impossible to run on standard personal computers.
+- **Traditional Sieve Algorithms** (e.g., Sieve of Eratosthenes, Segmented Sieve) encounter catastrophic memory and CPU bottlenecks beyond 10<sup>11</sup>.
+- **Pure Lookup Table Methods** covering up to 10<sup>16</sup> would require approximately 26 TB of storage, making them impossible to run on standard personal computers.
 
 **PrimeCounter Pro** offers an elegant engineering solution: the **Asymmetric Segmented Dynamic Sieving Architecture**. It compresses the storage footprint down to an extreme **9.2 MB** while utilizing the Numba JIT compiler for machine-code level acceleration, delivering stunning sub-second queries on standard laptops.
 
@@ -567,7 +567,7 @@ In traditional schemes, to achieve interval localization and fast retrieval, eac
 `[ Block ID, Start Position, End Position, Local Count, Odd Number Count in Block, Cumulative Count ]`.  
 This requires at least **34 MB** of storage for 2 million blocks.
 
-**Our Innovation**: Leveraging the mathematical consistency of prime distributions, **we only store 1 core field (Cumulative Count)**. The other 5 fields are derived on-the-fly at runtime via **\(O(1)\) nanosecond-level mathematical deductions**:
+**Our Innovation**: Leveraging the mathematical consistency of prime distributions, **we only store 1 core field (Cumulative Count)**. The other 5 fields are derived on-the-fly at runtime via **O(1) nanosecond-level mathematical deductions**:
 
 ```python
 # Physical Storage: Only a compact 1D cumulative count array is saved (9.2 MB)
@@ -622,37 +622,37 @@ Query Target: N = 7,500,000,000
                  [Path A: Forward Add]    [Path B: Backward Sub]
 ```
 
-- **Dynamic Path Decision**: The algorithm evaluates in \(O(1)\) time whether the target \(N\) is closer to the left anchor (forward accumulation) or the right anchor (backward subtraction), automatically choosing the shortest path.
-- **Divisibility Zero-Sieve**: When \(N\) is exactly divisible by 2.5 billion, the algorithm triggers an "instant return" directly from the table, taking 0 seconds.
-- **Perfect Boundary Alignment**: Through rigorous closed-interval design, the common \(\pm 1\) boundary errors at block junctions are completely eliminated.
+- **Dynamic Path Decision**: The algorithm evaluates in O(1) time whether the target N is closer to the left anchor (forward accumulation) or the right anchor (backward subtraction), automatically choosing the shortest path.
+- **Divisibility Zero-Sieve**: When N is exactly divisible by 2.5 billion, the algorithm triggers an "instant return" directly from the table, taking 0 seconds.
+- **Perfect Boundary Alignment**: Through rigorous closed-interval design, the common ±1 boundary errors at block junctions are completely eliminated.
 
 ---
 
-## 🏆 Accuracy Verification (Full \(10^{16}\) Coverage)
+## 🏆 Accuracy Verification (Full 10<sup>16</sup> Coverage)
 
 To guarantee absolute mathematical correctness and zero-error numerical precision near critical computer-arithmetic boundaries, this tool has been rigorously benchmarked and validated against three programmatically generated test suites (all unedited execution logs available in `logs/`), totaling **86 test cases, 100% passed**:
 
-### 1️⃣ Mersenne Number Boundaries (\(M_p = 2^p - 1\))
-- **Test Cases**: \(2^2-1, 2^3-1, 2^5-1, \dots, 2^{57}-1\) (17 prime exponents)
+### 1️⃣ Mersenne Number Boundaries (M<sub>p</sub> = 2<sup>p</sup> - 1)
+- **Test Cases**: 2<sup>2</sup>-1, 2<sup>3</sup>-1, 2<sup>5</sup>-1, …, 2<sup>57</sup>-1 (17 prime exponents)
 - **Verification Source**: OEIS A006880 + Wolfram Alpha
 - **Result**: ✅ 100% Match (17/17 tests passed)
 - **Test Purpose**: Validate special number-theoretic structure points (Mersenne numbers exhibit irregular prime distributions, serving as a litmus test for algorithm robustness)
 
-### 2️⃣ Decimal Milestones (\(10^1 \sim 10^{16}\))
-- **Test Cases**: \(10, 100, 1000, \dots, 10^{16}\) (16 orders of magnitude)
+### 2️⃣ Decimal Milestones (10<sup>1</sup> ~ 10<sup>16</sup>)
+- **Test Cases**: 10, 100, 1000, …, 10<sup>16</sup> (16 orders of magnitude)
 - **Verification Source**: OEIS A006880 (authoritative prime counting sequence)
 - **Result**: ✅ 100% Match (16/16 tests passed)
 - **Test Purpose**: Classic Prime Number Theorem (PNT) validation points, the most authoritative standard test suite
 
-### 3️⃣ Binary Milestones (\(2^1 \sim 2^{53}\))
-- **Test Cases**: \(2, 4, 8, 16, \dots, 2^{53}\) (53 binary boundaries)
+### 3️⃣ Binary Milestones (2<sup>1</sup> ~ 2<sup>53</sup>)
+- **Test Cases**: 2, 4, 8, 16, …, 2<sup>53</sup> (53 binary boundaries)
 - **Verification Source**: OEIS A006880
 - **Result**: ✅ 100% Match (53/53 tests passed)
 - **Test Purpose**: Maximum consecutive integer boundary without floating-point error (IEEE 754 double precision limit)
 
 ### 🧪 How to Run Built-in Tests
 
-The code includes **4 test suites** (first 3 correspond to the above validations + 4th for \(10^{16}\) critical edge cases), runnable by adjusting comments:
+The code includes **4 test suites** (first 3 correspond to the above validations + 4th for 10<sup>16</sup> critical edge cases), runnable by adjusting comments:
 
 <details>
 <summary><b>📋 Click to expand: Test suite code snippets</b></summary>
@@ -738,13 +738,13 @@ Test Suite: Decimal Milestones (10^1 ~ 10^16)
 
 ### A. Algorithm Comparison
 
-| Algorithm/Tool | Memory Footprint | \(\pi(10^{12})\) Time | \(\pi(10^{14})\) Time | \(\pi(10^{16})\) Time | Max Supported Range \(N\) | Hardware Barrier |
+| Algorithm/Tool | Memory Footprint | π(10<sup>12</sup>) Time | π(10<sup>14</sup>) Time | π(10<sup>16</sup>) Time | Max Supported Range N | Hardware Barrier |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **PrimeCounter Pro** | **9.2 MB** | **0.01 s** | **0.05 s** | **0.1 s ~ 0.3 s** | **\(10^{16}\)** | **Standard Laptop (i5 + 8G)** |
-| Sieve of Eratosthenes | \(\approx 125\text{ GB}\) | 10 s | 30 min | Hours (or OOM) | \(\approx 10^{11}\) | Expensive Server Cluster |
-| Segmented Sieve | \(\approx 1\text{ GB}\) | \(\approx 30\text{ s}\) | Unable to Compute | Unable to Compute | \(\approx 10^{12}\) | Mid-range PC |
-| Meissel-Lehmer | \(\approx 100\text{ MB}\) | 1 s | 10 s | 5 min | \(\approx 10^{16}\) | High-performance Workstation |
-| Deleglise-Rivat | \(\approx 50\text{ MB}\) | 0.5 s | 5 s | 2 min | \(\approx 10^{16}\) | High-performance Workstation |
+| **PrimeCounter Pro** | **9.2 MB** | **0.01 s** | **0.05 s** | **0.1 s ~ 0.3 s** | **10<sup>16</sup>** | **Standard Laptop (i5 + 8G)** |
+| Sieve of Eratosthenes | ≈ 125 GB | 10 s | 30 min | Hours (or OOM) | ≈ 10<sup>11</sup> | Expensive Server Cluster |
+| Segmented Sieve | ≈ 1 GB | ≈ 30 s | Unable to Compute | Unable to Compute | ≈ 10<sup>12</sup> | Mid-range PC |
+| Meissel-Lehmer | ≈ 100 MB | 1 s | 10 s | 5 min | ≈ 10<sup>16</sup> | High-performance Workstation |
+| Deleglise-Rivat | ≈ 50 MB | 0.5 s | 5 s | 2 min | ≈ 10<sup>16</sup> | High-performance Workstation |
 
 ### B. Real-World Benchmark (Intel i9-14900KF)
 
@@ -886,10 +886,10 @@ print(f"π({N:e}) = {result:,} (Time elapsed: {elapsed:.4f} seconds)")
 
 ### ⚙️ Complexity Analysis
 
-- **Space Complexity**: \(O(1)\) — The physical storage footprint remains strictly constant at **9.2 MB**, independent of the query scale \(N\).
+- **Space Complexity**: O(1) — The physical storage footprint remains strictly constant at **9.2 MB**, independent of the query scale N.
 - **Time Complexity**:
-  - **Worst Case**: \(O(\sqrt{N} \log \log \sqrt{N})\) (when the query point is exactly in the middle of a block, i.e., 1.25 billion steps from both ends).
-  - **Best Case**: \(O(1)\) (when the query point hits a multiple boundary of 2.5 billion, returning the table value instantly).
+  - **Worst Case**: O(√N log log √N) (when the query point is exactly in the middle of a block, i.e., 1.25 billion steps from both ends).
+  - **Best Case**: O(1) (when the query point hits a multiple boundary of 2.5 billion, returning the table value instantly).
   - **Average Case**: Since Numba JIT compiles the code to highly optimized machine code, actual random query times are stable between **0.01s and 0.3s**.
 
 ---
@@ -898,7 +898,7 @@ print(f"π({N:e}) = {result:,} (Time elapsed: {elapsed:.4f} seconds)")
 
 ### Data Table Generation
 - **Output File**: `cumulative_table_2000000_optimized.npz` (9.2 MB)
-- **Content**: Contains 2,000,001 cumulative prime counts, covering range: 0 to \(10^{16}\).
+- **Content**: Contains 2,000,001 cumulative prime counts, covering range: 0 to 10<sup>16</sup>.
 - **Computation Process**:
   - **Hardware**: Intel Core i9 processor
   - **Strategy**: Split into 10 batches, each processing 200,000 blocks
@@ -1004,7 +1004,7 @@ Storage Optimization Comparison:
 ## 🗺️ Future Roadmap
 
 ### Phase 1: Current Version (Completed ✅)
-- ✅ Range Support: \(10^{16}\)
+- ✅ Range Support: 10<sup>16</sup>
 - ✅ Memory Usage: 9.2 MB
 - ✅ Query Time: 0.01s ~ 0.3s
 
@@ -1026,7 +1026,7 @@ Storage Optimization Comparison:
 
 We warmly welcome contributions from number theory and high-performance computing enthusiasts worldwide! Current areas of interest include:
 
-1. **Breaking the \(10^{16}\) Limit**: Exploring ways to extend the algorithm to \(10^{18}\) or higher while maintaining an ultra-low memory footprint.
+1. **Breaking the 10<sup>16</sup> Limit**: Exploring ways to extend the algorithm to 10<sup>18</sup> or higher while maintaining an ultra-low memory footprint.
 2. **GPU Acceleration**: Porting the bidirectional sieving algorithm to GPUs using PyCUDA or CuPy.
 3. **Multi-language Ecosystem**: Providing native Rust / C++ bindings to squeeze out every bit of hardware performance.
 
@@ -1070,6 +1070,5 @@ If you use this software in academic research, publications, or engineering proj
 </div>
 ```
 
-</details>
-
 ---
+
