@@ -30,8 +30,7 @@
 - **传统筛法**（如埃拉托斯特尼筛、分段筛）在 10<sup>11</sup> 以上会遭遇灾难性的内存和 CPU 时间瓶颈。
 - **纯查表法** 若要覆盖到 10<sup>16</sup> 范围，则需要消耗约 26 TB 的海量存储空间，在普通个人电脑上完全无法运行。
 
-**PrimeCounter Pro** 提出了一种极其优雅的工程解决方案：**非对称分段动态筛选架构**。它将空间压缩到了极致的 **9.2 MB**，同时利用 Numba JIT 编译器进行机器码级加速，在普通笔记本电脑上实现了令人惊叹的秒级查询。
-
+**PrimeCounter Pro** 提出了一种极其优雅的工程解决方案：**大数查表，小数现筛**。仅用 **9.2 MB** 存储预计算数据，配合 Numba JIT 机器码级加速的动态筛选，在普通笔记本电脑上实现了 **10¹⁶** 范围内任意查询的秒级响应。
 ---
 
 ## ✨ 核心突破
@@ -555,7 +554,7 @@ Computing π(N) (the number of primes less than or equal to N) is a classic crow
 - **Traditional Sieve Algorithms** (e.g., Sieve of Eratosthenes, Segmented Sieve) encounter catastrophic memory and CPU bottlenecks beyond 10<sup>11</sup>.
 - **Pure Lookup Table Methods** covering up to 10<sup>16</sup> would require approximately 26 TB of storage, making them impossible to run on standard personal computers.
 
-**PrimeCounter Pro** offers an elegant engineering solution: the **Asymmetric Segmented Dynamic Sieving Architecture**. It compresses the storage footprint down to an extreme **9.2 MB** while utilizing the Numba JIT compiler for machine-code level acceleration, delivering stunning sub-second queries on standard laptops.
+**PrimeCounter Pro** presents an exceptionally elegant engineering solution: **lookup for large numbers, sieve for small numbers**. With merely **9.2 MB** of precomputed data and Numba JIT-accelerated dynamic sieving at machine code level, it achieves second-level response for arbitrary queries up to **10¹⁶** on ordinary laptops.
 
 ---
 
