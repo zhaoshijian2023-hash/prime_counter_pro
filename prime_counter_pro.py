@@ -1072,7 +1072,7 @@ def pi(N, verbose=False, return_is_prime=False, use_cache=True):
 
         # 块的范围 / Block range
         start_idx = BLOCK_SIZE * block_id - 1
-        block_end_idx = start_idx + BLOCK_SIZE
+        block_end_idx = start_idx + BLOCK_SIZE - 1  # ⚠️ 这里加上 - 1
         start_idx = max(start_idx, 0)
         block_size = block_end_idx - start_idx + 1
 
