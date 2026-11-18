@@ -50,7 +50,7 @@ cumulative_table = [count_1, count_2, ..., count_2000000]
 
 # 运行时实时推导（O(1) 纯数学计算，零内存开销）
 block_start = max((block_id * 2_500_000_000 - 1), 0) 
-block_end = block_start + 2_500_000_000
+block_end = block_start + 2_500_000_000 - 1
 local_count = cumulative_table[block_id] - cumulative_table[block_id - 1]
 # ... 其他元数据及边界信息均通过位运算与代数公式即时得出
 ```
@@ -580,7 +580,7 @@ cumulative_table = [count_1, count_2, ..., count_2000000]
 
 # Runtime On-the-fly Deduction (O(1) pure math, zero memory overhead)
 block_start = max((block_id * 2_500_000_000 - 1), 0) 
-block_end = block_start + 2_500_000_000
+block_end = block_start + 2_500_000_000 - 1
 local_count = cumulative_table[block_id] - cumulative_table[block_id - 1]
 # ... Other metadata and boundary details are instantly derived via bitwise ops & algebraic formulas
 ```
